@@ -6,7 +6,7 @@ import {
   signOut,
 } from 'firebase/auth';
 
-const registerUser = createAsyncThunk(
+export const registerUser = createAsyncThunk(
   'auth/register',
   async ({ email, password }, { rejectWithValue }) => {
     try {
@@ -30,6 +30,9 @@ const registerUser = createAsyncThunk(
   }
 );
 
+//
+
+//
 export const loginUser = createAsyncThunk(
   'auth/register',
   async ({ email, password }, { rejectWithValue }) => {
@@ -39,8 +42,25 @@ export const loginUser = createAsyncThunk(
         email,
         password
       );
+
+      const user = userCredential.user;
+
+      return {
+        user: {
+          uid: user.uid,
+          email: user.email,
+        },
+        token: user.getIdToken(),
+      };
     } catch (e) {
       return rejectWithValue(e.message);
     }
   }
 );
+
+//
+
+//
+export const logoutUser = createAsyncThunk('auth/logout', () => {
+  return auth.signOut();
+});
