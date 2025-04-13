@@ -22,7 +22,7 @@ export const registerUser = createAsyncThunk(
           uid: user.uid,
           email: user.email,
         },
-        token: user.getIdToken(),
+        token: await user.getIdToken(),
       };
     } catch (e) {
       return rejectWithValue(e.message);
@@ -34,7 +34,7 @@ export const registerUser = createAsyncThunk(
 
 //
 export const loginUser = createAsyncThunk(
-  'auth/register',
+  'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -50,7 +50,7 @@ export const loginUser = createAsyncThunk(
           uid: user.uid,
           email: user.email,
         },
-        token: user.getIdToken(),
+        token: await user.getIdToken(),
       };
     } catch (e) {
       return rejectWithValue(e.message);
@@ -59,8 +59,39 @@ export const loginUser = createAsyncThunk(
 );
 
 //
+export const refreshUser = createAsyncThunk(
+  'auth/refresh',
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        return rejectWithValue('There is no user that is currently logged in');
+      }
+
+      const token = await user.getIdToken();
+      if (!token) {
+        return rejectWithValue('Unable to get user token');
+      }
+
+      return {
+        uid: user.uid,
+        email: user.email,
+        token,
+      };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 //
-export const logoutUser = createAsyncThunk('auth/logout', () => {
-  return auth.signOut();
-});
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await signOut(auth);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

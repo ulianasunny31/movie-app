@@ -2,10 +2,15 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navigation from './components/layout/Navigation';
 import { Layout } from './components/layout/Layout';
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
 import NotFound from './components/layout/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 import RestrictedRoute from './components/RestrictedRoute';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsRefreshing } from './redux/auth/selectors';
+import { auth } from './services/firebase/firebase';
+import { refreshUser } from './redux/auth/operations';
+import Loader from './components/layout/Loader';
 
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const Library = lazy(() => import('./pages/Library/Library'));
@@ -16,7 +21,21 @@ const RegistrationPage = lazy(() =>
 );
 
 function App() {
-  return (
+  const isRefreshing = useSelector(selectIsRefreshing);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(refreshUser());
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch]);
+
+  return isRefreshing ? (
+    <Loader />
+  ) : (
     <div>
       <Routes>
         <Route path="/" element={<Layout />}>
