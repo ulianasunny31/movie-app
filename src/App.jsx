@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Navigation from './components/layout/Navigation';
+import Navigation from './components/layout/Navigation/Navigation';
 import { Layout } from './components/layout/Layout';
 import { lazy, useEffect } from 'react';
 import NotFound from './components/layout/NotFound';
@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectIsRefreshing } from './redux/auth/selectors';
 import { auth } from './services/firebase/firebase';
 import { refreshUser } from './redux/auth/operations';
-import Loader from './components/layout/Loader';
+import Loader from './components/layout/Loader/Loader';
 
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const Library = lazy(() => import('./pages/Library/Library'));

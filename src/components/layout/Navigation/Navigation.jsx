@@ -1,6 +1,6 @@
 import css from './Navigation.module.css';
-import UserMenu from './UserMenu/UserMenu';
-import AuthNav from './AuthNav/AuthNav';
+import UserMenu from '../UserMenu/UserMenu';
+import AuthNav from '../AuthNav/AuthNav';
 
 const Navigation = () => {
   return (

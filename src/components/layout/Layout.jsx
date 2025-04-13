@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
-import Loader from './Loader';
-import { Footer } from './Footer';
-import Navigation from './Navigation';
+import Loader from './Loader/Loader';
+import { Footer } from './Footer/Footer';
+import Navigation from './Navigation/Navigation';
 import { Outlet } from 'react-router-dom';
 
 export const Layout = () => {
