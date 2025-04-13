@@ -1,24 +1,48 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navigation from './components/layout/Navigation';
-import HomePage from './pages/HomePage/HomePage';
-import Library from './pages/Library/Library';
-import SearchPage from './pages/SearchPage/SearchPage';
-import LoginPage from './pages/LoginPage/LoginPage';
-import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
+import { Layout } from './components/layout/Layout';
+import { lazy } from 'react';
+import NotFound from './components/layout/NotFound';
+import PrivateRoute from './components/PrivateRoute';
+import RestrictedRoute from './components/RestrictedRoute';
+
+const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
+const Library = lazy(() => import('./pages/Library/Library'));
+const SearchPage = lazy(() => import('./pages/SearchPage/SearchPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage/LoginPage'));
+const RegistrationPage = lazy(() =>
+  import('./pages/RegistrationPage/RegistrationPage')
+);
 
 function App() {
   return (
     <div>
-      <Navigation />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/library" element={<Library />} />
-        <Route path="/search-movies" element={<SearchPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegistrationPage />} />
-
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="library"
+            element={<PrivateRoute redirectTo="/login" element={<Library />} />}
+          />
+          <Route
+            path="search-movies"
+            element={
+              <PrivateRoute redirectTo="/login" element={<SearchPage />} />
+            }
+          />{' '}
+          <Route path="*" element={<NotFound />} />
+          <Route
+            path="login"
+            element={<RestrictedRoute redirectTo="/" element={<LoginPage />} />}
+          />
+          <Route
+            path="register"
+            element={
+              <RestrictedRoute redirectTo="/" element={<RegistrationPage />} />
+            }
+          />
+        </Route>
       </Routes>
     </div>
   );

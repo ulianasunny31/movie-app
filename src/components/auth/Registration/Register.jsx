@@ -1,14 +1,14 @@
+import css from './Register.module.css';
 import { Field, Form, Formik } from 'formik';
-import css from './Login.module.css';
 import { Link } from 'react-router-dom';
+import { registerUser } from '../../../redux/auth/operations';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../../../redux/auth/operations';
 
-const Login = () => {
+const Register = () => {
   const dispatch = useDispatch();
 
   function handleSubmit(values, { resetForm }) {
-    dispatch(loginUser(values));
+    dispatch(registerUser(values));
     resetForm();
   }
 
@@ -21,7 +21,7 @@ const Login = () => {
           password: '',
         }}
       >
-        <Form className={css.loginForm}>
+        <Form className={css.registerForm}>
           <div>
             <label> Email: </label>
             <Field type="text" name="email"></Field>
@@ -30,9 +30,9 @@ const Login = () => {
             <label> Password: </label>
             <Field type="password" name="password"></Field>
           </div>
-          <button type="submit">Log in</button>
+          <button type="submit">Register</button>
           <p>
-            Don't have an account yet? <Link to="/register">Register</Link>
+            Already have an account? <Link to="/login">Log in</Link>
           </p>
         </Form>
       </Formik>
@@ -40,4 +40,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
