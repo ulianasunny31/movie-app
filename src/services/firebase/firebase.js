@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDzbU-0JanZ_Az8CuHZ4MYrEx4BUFb2KFQ',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: 'movie-app-77108.firebaseapp.com',
   projectId: 'movie-app-77108',
   storageBucket: 'movie-app-77108.firebasestorage.app',

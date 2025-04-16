@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { authReducer } from './auth/slice';
+import { moviesReducer } from './movies/slice';
 import {
   persistStore,
   persistReducer,
@@ -21,6 +22,7 @@ const authPersistConfig = {
 export const store = configureStore({
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
+    movies: moviesReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
